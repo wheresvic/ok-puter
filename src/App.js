@@ -207,18 +207,18 @@ class App extends Component {
 
     if (this.state.commands.length) {
       for (let i = this.state.commands.length - 1; i >= 0; --i) {
-        const timeText = this
-          .state
-          .commands[i]
-          .time
-          .fromNow();
+        const timeText = this.state.commands[i].time.utc();
         const command = this.state.commands[i].command;
 
         const key = timeText + command;
         renderedCommands.push(
           <div key={key} className="columns command fade-in">
             <div className="column col-4 command-time">
-              {timeText}
+              {this
+          .state
+          .commands[i]
+          .time
+          .fromNow()}
             </div>
             <div className="column col-8">
               {command}
