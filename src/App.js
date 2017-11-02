@@ -140,11 +140,12 @@ class App extends Component {
       const recognizedCommand = commandParser(command);
 
       if (recognizedCommand) {
-        if (recognizedCommand === commands.TRUMP_TWEETS.key) {
+        if (recognizedCommand.key === commands.TRUMP_TWEETS.key) {
           getTrumpTweets();
+        } else {
+          donaldMusicAction(recognizedCommand);
         }
 
-        donaldMusicAction(recognizedCommand);
       }
 
       recognition.start();
