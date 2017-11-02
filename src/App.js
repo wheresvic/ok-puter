@@ -60,16 +60,6 @@ const getTrumpTweets = () => {
     const rand = chance.natural({min: 0, max: tweets.length});
     return speak(tweets[rand].text);
 
-    /*
-        const readTweets = async(tweets) => {
-          for (const tweet of tweets) {
-            console.log(tweet.text);
-            await speak(tweet.text);
-          }
-        }
-        return readTweets(tweets);
-        */
-
   }).catch(err => {
     console.error(err);
   });
@@ -89,7 +79,6 @@ const donaldMusicAction = (command) => {
 
 }
 
-
 class App extends Component {
 
   constructor(props) {
@@ -105,26 +94,6 @@ class App extends Component {
 
   recognize = (e) => {
     e.preventDefault();
-
-    // const recognition = new SpeechRecognition();
-
-    /*
-    recognition.onaudiostart = () => {
-      console.log('onaudiostart');
-    }
-
-    recognition.onaudioend = () => {
-      console.log('onaudioend');
-    }
-
-    recognition.onsoundstart = () => {
-      console.log('onsoundstart');
-    }
-
-    recognition.onsoundend = () => {
-      console.log('onsoundend');
-    }
-    */
 
     recognition.onstart = function () {
       console.log('Voice recognition activated. Try speaking into the microphone.');
@@ -178,25 +147,24 @@ class App extends Component {
 
   getTrumpTweetsClick = (e) => {
     e.preventDefault();
-    this.getTrumpTweets();
+    getTrumpTweets();
   }
 
   render() {
     return (
-      <div>
+      <section className="container grid-xs">
         <div>
           <button onClick={this.recognize}>Start voice recognition</button>
         </div>
         <div>
-          <button onClick={this.getTrumpTweets}>Get trump tweets</button>
-        </div>
-        <div>
-          {this.state.content}
+          <button onClick={this.getTrumpTweetsClick}>Get trump tweets</button>
         </div>
         <div>
           {this.state.command}
         </div>
-      </div>
+
+      </section>
+
     );
   }
 }
