@@ -236,10 +236,49 @@ class App extends Component {
             <button className="btn btn-primary" onClick={this.handleStopRecognition}>Stop voice recognition</button>
           </p>
 }
+          {/*
           <p className="text-center">
             <button className="btn btn-primary" onClick={this.getTrumpTweetsClick}>Get trump tweets</button>
           </p>
+          */}
         </section>
+        <section className="container grid-xl">
+          <div className="divider text-center" data-content="available commands"></div>
+          <div className="columns command-list-row">
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">trump tweets</button>
+            </div>
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">play music</button>
+            </div>
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">stop music</button>
+            </div>
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">pause music</button>
+            </div>
+          </div>
+          <div className="columns command-list-row">
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">music volume up</button>
+            </div>
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">music volume down</button>
+            </div>
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">music set volume</button>
+            </div>
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">next song</button>
+            </div>
+          </div>
+          <div className="columns command-list-row">
+            <div className="column col-3 col-xs-12 text-center">
+              <button className="btn">next song</button>
+            </div>
+          </div>
+        </section>
+
         <section className="container grid-xs main-content">
           <div
             className="divider text-center voice-recognition-status"

@@ -29,6 +29,11 @@
   margin-top: 2rem;
 }
 
+.command-list-row .column {
+  margin-bottom: 0.2rem;
+  margin-top: 0.2rem;
+}
+
 .smash-it {
   word-wrap: break-word;
   word-break: break-all;
