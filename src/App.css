@@ -8,7 +8,6 @@
 }
 
 .main-content {
-  min-height: 50rem;
   margin-top: 1rem;
 }
 
@@ -26,6 +25,10 @@
 }
 
 .main-action {
+  margin-top: 2rem;
+}
+
+.available-commands {
   margin-top: 2rem;
 }
 
@@ -122,13 +125,13 @@
 footer {
   width: 100%;
   color: #acb3c2;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
 }
 
 .grid-footer {
-  margin-bottom: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  margin-top: 1rem;
 }
 
 .grid-footer a {

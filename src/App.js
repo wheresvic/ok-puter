@@ -8,6 +8,8 @@ import fetch from 'isomorphic-fetch';
 
 import {commands, commandParser} from './services/commandParser';
 
+import img from './voice-recognition.jpg';
+
 const chance = new Chance();
 
 const responsiveVoice = window.responsiveVoice;
@@ -205,17 +207,21 @@ class App extends Component {
 
     if (this.state.commands.length) {
       for (let i = this.state.commands.length - 1; i >= 0; --i) {
+        const timeText = this
+          .state
+          .commands[i]
+          .time
+          .fromNow();
+        const command = this.state.commands[i].command;
+
+        const key = timeText + command;
         renderedCommands.push(
-          <div key={chance.guid()} className="columns command">
+          <div key={key} className="columns command fade-in">
             <div className="column col-4 command-time">
-              {this
-                .state
-                .commands[i]
-                .time
-                .fromNow()}
+              {timeText}
             </div>
             <div className="column col-8">
-              {this.state.commands[i].command}
+              {command}
             </div>
           </div>
         );
@@ -223,18 +229,19 @@ class App extends Component {
     }
 
     return (
-      <div className="bg-gray" style={{
-        marginBottom: '1rem'
-      }}>
-        <section
-          className="container grid-xs"
-          style={{
-          paddingTop: '2rem',
-          paddingBottom: '1rem'
-        }}>
-          <h1 className="text-center title mysurance">OkPuter</h1>
-        </section>
-        <section className="container grid-xs">
+      <div>
+        <div className="bg-secondary">
+          <section
+            className="container grid-xs"
+            style={{
+            paddingTop: '2rem',
+            paddingBottom: '1rem'
+          }}>
+            <h1 className="text-center title mysurance">OkPuter</h1>
+          </section>
+
+        </div>
+        <section className="container grid-xs main-content">
           {!this.state.voiceRecognitionStarted && <p className="text-center">
             <button className="btn btn-primary" onClick={this.handleStartRecognize}>Start voice recognition</button>
           </p>
@@ -251,6 +258,7 @@ class App extends Component {
         </section>
         <section className="container grid-xl">
           <div className="divider text-center" data-content="available commands"></div>
+          <div className="available-commands">
           <div className="columns command-list-row">
             <div className="column col-3 col-xs-12 text-center">
               <button className="btn">trump tweets</button>
@@ -284,6 +292,7 @@ class App extends Component {
               <button className="btn">next song</button>
             </div>
           </div>
+          </div>
         </section>
 
         <section className="container grid-xs main-content">
@@ -294,7 +303,11 @@ class App extends Component {
             {renderedCommands}
           </div>
         </section>
-        <footer className="bg-gray">
+        <section className="container grid-xl app-content">
+          <img className="centered img-responsive" src={img} alt="funny"/>
+        </section>
+
+        <footer className="bg-dark">
           <section className="grid-footer container grid-xs">
             <div className="mysurance logo">
               OkPuter
