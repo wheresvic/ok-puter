@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Chance from 'chance';
+import moment from 'moment';
 
 import './App.css';
 
@@ -86,42 +87,54 @@ class App extends Component {
 
     this.state = {
       content: '',
-      command: ''
+      commands: [],
+      voiceRecognitionStatus: 'voice recognition is off',
+      voiceRecognitionStarted: false
     };
   }
 
   componentDidMount() {}
 
-  recognize = (e) => {
+  handleStartRecognize = (e) => {
     e.preventDefault();
 
-    recognition.onstart = function () {
-      console.log('Voice recognition activated. Try speaking into the microphone.');
+    recognition.onstart = () => {
+      this.setState({voiceRecognitionStatus: 'voice recognition activated - try speaking into the microphone'});
     }
 
     recognition.onend = () => {
-      console.log('Voice recognition ended.');
+      this.setState({voiceRecognitionStatus: 'voice recognition ended'});
 
       const command = this.state.content;
 
-      this.setState({command, content: ''});
+      if (command) {
+        this.setState({
+          commands: [
+            ...this.state.commands, {
+              time: moment(),
+              command
+            }
+          ],
+          content: ''
+        });
 
-      const recognizedCommand = commandParser(command);
+        const recognizedCommand = commandParser(command);
 
-      if (recognizedCommand) {
-        if (recognizedCommand.key === commands.TRUMP_TWEETS.key) {
-          getTrumpTweets();
-        } else {
-          donaldMusicAction(recognizedCommand);
+        if (recognizedCommand) {
+          if (recognizedCommand.key === commands.TRUMP_TWEETS.key) {
+            getTrumpTweets();
+          } else {
+            donaldMusicAction(recognizedCommand);
+          }
         }
-
       }
 
       recognition.start();
     }
 
-    recognition.onerror = function (event) {
-      console.error('something bad happened :(');
+    recognition.onerror = (event) => {
+      this.setState({voiceRecognitionStatus: 'error while doing voice recognition'});
+
       console.error(event);
     }
 
@@ -143,6 +156,21 @@ class App extends Component {
 
     recognition.start();
 
+    this.setState({voiceRecognitionStarted: true});
+
+  }
+
+  handleStopRecognition = (e) => {
+    e.preventDefault();
+
+    recognition.onend = () => {
+      this.setState({voiceRecognitionStatus: 'voice recognition is off'});
+    }
+
+    recognition.stop();
+
+    this.setState({voiceRecognitionStarted: false});
+
   }
 
   getTrumpTweetsClick = (e) => {
@@ -151,20 +179,90 @@ class App extends Component {
   }
 
   render() {
+    /*
+    const renderedVoiceRecognitionStatuses = [];
+
+    if (this.state.voiceRecognitionStatuses.length) {
+      for (let i = this.state.voiceRecognitionStatuses.length - 1; i >= 0; --i) {
+        renderedVoiceRecognitionStatuses.push(
+          <p key={chance.guid()} className="text-center">
+            {moment().format('HH:MM:ss')}
+            - {this.state.voiceRecognitionStatuses[i]}
+          </p>
+        );
+      }
+    }
+    */
+
+    const renderedCommands = [];
+
+    if (this.state.commands.length) {
+      for (let i = this.state.commands.length - 1; i >= 0; --i) {
+        renderedCommands.push(
+          <div key={chance.guid()} className="columns command">
+            <div className="column col-4 command-time">
+              {this
+                .state
+                .commands[i]
+                .time
+                .fromNow()}
+            </div>
+            <div className="column col-8">
+              {this.state.commands[i].command}
+            </div>
+          </div>
+        );
+      }
+    }
+
     return (
-      <section className="container grid-xs">
-        <div>
-          <button onClick={this.recognize}>Start voice recognition</button>
-        </div>
-        <div>
-          <button onClick={this.getTrumpTweetsClick}>Get trump tweets</button>
-        </div>
-        <div>
-          {this.state.command}
-        </div>
-
-      </section>
-
+      <div className="bg-gray" style={{
+        marginBottom: '1rem'
+      }}>
+        <section
+          className="container grid-xs"
+          style={{
+          paddingTop: '2rem',
+          paddingBottom: '1rem'
+        }}>
+          <h1 className="text-center title mysurance">OkPuter</h1>
+        </section>
+        <section className="container grid-xs">
+          {!this.state.voiceRecognitionStarted && <p className="text-center">
+            <button className="btn btn-primary" onClick={this.handleStartRecognize}>Start voice recognition</button>
+          </p>
+}
+          {this.state.voiceRecognitionStarted && <p className="text-center">
+            <button className="btn btn-primary" onClick={this.handleStopRecognition}>Stop voice recognition</button>
+          </p>
+}
+          <p className="text-center">
+            <button className="btn btn-primary" onClick={this.getTrumpTweetsClick}>Get trump tweets</button>
+          </p>
+        </section>
+        <section className="container grid-xs main-content">
+          <div
+            className="divider text-center voice-recognition-status"
+            data-content={this.state.voiceRecognitionStatus}></div>
+          <div className="main-content-commands">
+            {renderedCommands}
+          </div>
+        </section>
+        <footer className="bg-gray">
+          <section className="grid-footer container grid-xs">
+            <div className="mysurance logo">
+              OkPuter
+            </div>
+            <div>
+              We do not use any cookies nor store any personal information.
+            </div>
+            <div>
+              Licensed under the&nbsp;
+              <a href="https://github.com/victorparmar/ok-puter/blob/master/LICENSE">MIT License</a>.
+            </div>
+          </section>
+        </footer>
+      </div>
     );
   }
 }

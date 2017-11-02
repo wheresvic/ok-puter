@@ -1,28 +1,135 @@
-.App {
-  text-align: center;
+/**
+ * Application
+ */
+
+.app-content {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.main-content {
+  min-height: 50rem;
+  margin-top: 1rem;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.main-content-commands {
+  margin-top: 2rem;
 }
 
-.App-title {
-  font-size: 1.5em;
+.main-content-commands .command {
+  margin-bottom: 0.5rem;
 }
 
-.App-intro {
-  font-size: large;
+.main-content-commands .command-time {
+  font-size: 80%;
+  padding-top: 0.1rem;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.main-action {
+  margin-top: 2rem;
+}
+
+.smash-it {
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.mysurance {
+  font-family: 'Medula One', cursive;
+}
+
+
+/**
+ * Animations
+ */
+
+.no-transition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
+}
+
+.fade-in {
+  animation: fadeIn 500ms;
+  -moz-animation: fadeIn 500ms;
+  -webkit-animation: fadeIn 500ms;
+  -o-animation: fadeIn 500ms;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  /* Firefox */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  /* Safari and Chrome */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  /* Opera */
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+/**
+ * Header
+ */
+
+.title {
+  font-size: 3rem;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+}
+
+
+/**
+ * Footer
+ */
+
+footer {
+  width: 100%;
+  color: #acb3c2;
+}
+
+.grid-footer {
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 1rem;
+}
+
+.grid-footer a {
+  color: #727e96;
+}
+
+.grid-footer .logo {
+  font-size: 1rem;
 }
