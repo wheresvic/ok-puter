@@ -93,10 +93,17 @@ class App extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.startRecognition();
+  }
 
   handleStartRecognize = (e) => {
     e.preventDefault();
+
+    this.startRecognition();
+  }
+
+  startRecognition = () => {
 
     recognition.onstart = () => {
       this.setState({voiceRecognitionStatus: 'voice recognition activated - try speaking into the microphone'});
