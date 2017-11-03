@@ -37,7 +37,6 @@ export const commands = {
       return commands.DONALD_MUSIC_SET_VOLUME;
     }
   },
-
   DONALD_NEXT_SONG: {
     key: 'DONALD_NEXT_SONG',
     values: ['next song'],
@@ -47,6 +46,11 @@ export const commands = {
     key: 'DONALD_PREVIOUS_SONG',
     values: ['previous song'],
     action: 'previous'
+  },
+  DONALD_TRAIN_DELAYS: {
+    key: 'DONALD_TRAIN_DELAYS',
+    values: ['train delay'],
+    action: 8002546
   }
 }
 

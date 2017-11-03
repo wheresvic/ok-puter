@@ -10,6 +10,7 @@ import {commands, commandParser} from './services/commandParser';
 import {speak} from './services/speaker';
 import {getTrumpTweets} from './services/tweetService';
 import {donaldMusicAction} from './services/musicService';
+import * as trainService from './services/trainService';
 
 import img from './voice-recognition.jpg';
 
@@ -155,6 +156,8 @@ class App extends Component {
         if (recognizedCommand) {
           if (recognizedCommand.key === commands.TRUMP_TWEETS.key) {
             this.doGetTrumpTweets();
+          } else if (recognizedCommand.key === commands.DONALD_TRAIN_DELAYS.key) {
+            this.doGetTrainDelays(recognizedCommand);
           } else {
             this.doDonaldMusicAction(recognizedCommand);
           }
@@ -251,6 +254,29 @@ class App extends Component {
     });
   }
 
+  doGetTrainDelays = (command) => {
+    const now = moment();
+    const date = now.format('YYMMDD');
+    const hour = now.format('HH');
+
+    trainService
+      .getTrainDelays(command.action, date, hour)
+      .then(trips => {
+        return trainService.getDelayText(trips);
+      })
+      .then(text => {
+        this.setState({commandOutput: text, commandOutputTime: moment()});
+        return speak(text);
+      })
+      .catch(err => {
+        this.setState({
+          commandOutput: err + '',
+          commandOutputTime: moment()
+        });
+        console.error(err);
+      });
+  }
+
   render() {
 
     const renderedCommands = [];
@@ -289,6 +315,13 @@ class App extends Component {
         <code className="fade-in">{this.state.commandOutput}</code>
       )
       : null;
+
+    const commandOutputTimeStr = this.state.commandOutputTime
+      ? this
+        .state
+        .commandOutputTime
+        .fromNow()
+      : 'command output';
 
     return (
       <div>
@@ -371,11 +404,19 @@ class App extends Component {
                   .doDonaldMusicAction
                   .bind(this, commands.DONALD_PREVIOUS_SONG)}>previous song</button>
               </div>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doGetTrainDelays
+                  .bind(this, commands.DONALD_TRAIN_DELAYS)}>Get train delays for haltingen</button>
+              </div>
+
             </div>
           </div>
           <div
             className="divider text-center voice-recognition-status"
-            data-content="command output"></div>
+            data-content={commandOutputTimeStr}></div>
           <div className="app-content text-center">
             {renderedCommandOutput}
           </div>
