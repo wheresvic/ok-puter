@@ -7,6 +7,11 @@
   margin-bottom: 2rem;
 }
 
+.app-content-sm {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .main-content {
   margin-top: 1rem;
 }
@@ -29,7 +34,8 @@
 }
 
 .available-commands {
-  margin-top: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .command-list-row .column {

@@ -18,19 +18,7 @@ const chance = new Chance();
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
-const doGetTrumpTweets = () => {
-  getTrumpTweets().then(tweets => {
-    console.log(tweets);
-
-    const rand = chance.natural({min: 0, max: tweets.length});
-    return speak(tweets[rand].text);
-
-  }).catch(err => {
-    console.error(err);
-  });
-}
-
-const CommandButton = (props) => {
+const CommandEntry = (props) => {
   return (
     <div className="columns command fade-in">
       <div className="column col-4 command-time">
@@ -52,7 +40,8 @@ class App extends Component {
       content: '',
       commands: [],
       voiceRecognitionStatus: 'voice recognition is off',
-      voiceRecognitionStarted: false
+      voiceRecognitionStarted: false,
+      commandOutput: ''
     };
   }
 
@@ -92,11 +81,9 @@ class App extends Component {
 
         if (recognizedCommand) {
           if (recognizedCommand.key === commands.TRUMP_TWEETS.key) {
-            doGetTrumpTweets();
+            this.doGetTrumpTweets();
           } else {
-            donaldMusicAction(recognizedCommand).catch(err => {
-              console.error(err);
-            });
+            this.doDonaldMusicAction(recognizedCommand);
           }
         }
       }
@@ -146,7 +133,32 @@ class App extends Component {
 
   getTrumpTweetsClick = (e) => {
     e.preventDefault();
-    doGetTrumpTweets();
+    this.doGetTrumpTweets();
+  }
+
+  doDonaldMusicAction = (command) => {
+    donaldMusicAction(command).then(response => {
+      console.log(response);
+
+      this.setState({commandOutput: `${response.url} - ${response.status}`});
+
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+
+  doGetTrumpTweets = () => {
+    getTrumpTweets().then(tweets => {
+      console.log(tweets);
+
+      const rand = chance.natural({min: 0, max: tweets.length});
+      return speak(tweets[rand].text);
+
+    }).then(text => {
+      this.setState({commandOutput: text});
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
   render() {
@@ -163,9 +175,9 @@ class App extends Component {
         const command = this.state.commands[i].command;
 
         const key = timeText + command;
-        renderedCommands.push(<CommandButton
+        renderedCommands.push(<CommandEntry
           key={key}
-          timeText={this
+          time={this
           .state
           .commands[i]
           .time
@@ -173,6 +185,14 @@ class App extends Component {
           command={command}/>);
       }
     }
+
+    const renderedVoiceRecognitionButton = this.state.voiceRecognitionStarted
+      ? (
+        <button className="btn btn-primary" onClick={this.handleStopRecognition}>Stop voice recognition</button>
+      )
+      : (
+        <button className="btn btn-primary" onClick={this.handleStartRecognize}>Start voice recognition</button>
+      );
 
     return (
       <div>
@@ -188,60 +208,80 @@ class App extends Component {
 
         </div>
         <section className="container grid-xs main-content">
-          {!this.state.voiceRecognitionStarted && <p className="text-center">
-            <button className="btn btn-primary" onClick={this.handleStartRecognize}>Start voice recognition</button>
-          </p>
-}
-          {this.state.voiceRecognitionStarted && <p className="text-center">
-            <button className="btn btn-primary" onClick={this.handleStopRecognition}>Stop voice recognition</button>
-          </p>
-}
-          {/*
           <p className="text-center">
-            <button className="btn btn-primary" onClick={this.getTrumpTweetsClick}>Get trump tweets</button>
+            {renderedVoiceRecognitionButton}
           </p>
-          */}
         </section>
         <section className="container grid-xl">
           <div className="divider text-center" data-content="available commands"></div>
           <div className="available-commands">
             <div className="columns command-list-row">
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">trump tweets</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button className="btn" onClick={this.doGetTrumpTweets}>trump tweets</button>
               </div>
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">play music</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_PLAY_MUSIC)}>play music</button>
               </div>
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">stop music</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_STOP_MUSIC)}>stop music</button>
               </div>
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">pause music</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_PAUSE_MUSIC)}>pause music</button>
               </div>
-            </div>
-            <div className="columns command-list-row">
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">music volume up</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_MUSIC_VOLUME_UP)}>music volume up</button>
               </div>
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">music volume down</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_MUSIC_VOLUME_DOWN)}>music volume down</button>
               </div>
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">music set volume</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button className="btn">music set volume &lt;[0-100]&gt;</button>
               </div>
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">next song</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_NEXT_SONG)}>next song</button>
               </div>
-            </div>
-            <div className="columns command-list-row">
-              <div className="column col-3 col-xs-12 text-center">
-                <button className="btn">next song</button>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_PREVIOUS_SONG)}>previous song</button>
               </div>
             </div>
           </div>
+          <div
+            className="divider text-center voice-recognition-status"
+            data-content="command output"></div>
+          <div className="app-content text-center">
+            {this.state.commandOutput}
+          </div>
         </section>
 
-        <section className="container grid-xs main-content">
+        <section className="container grid-xs">
           <div
             className="divider text-center voice-recognition-status"
             data-content={this.state.voiceRecognitionStatus}></div>

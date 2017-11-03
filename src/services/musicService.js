@@ -1,8 +1,8 @@
 import fetch from 'isomorphic-fetch';
 
 export const donaldMusicAction = (command) => {
-
-  return fetch('http://localhost:3001/music/' + command.action, {
+  const url = 'http://localhost:3001/music/' + command.action;
+  return fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
