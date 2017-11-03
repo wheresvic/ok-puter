@@ -1,7 +1,11 @@
 const responsiveVoice = window.responsiveVoice;
 const voicelist = responsiveVoice.getVoices();
 console.log(voicelist);
-const voice = "UK English Female";
+// const voice = "UK English Female";
+// const voice = "French Female";
+// const voice = "Deutsch Female";
+// const voice = "Greek Female";
+const voice = "Australian Female";
 responsiveVoice.setDefaultVoice("French Female");
 
 export const speak = (text) => {
@@ -35,6 +39,7 @@ export const speak = (text) => {
       */
 
       responsiveVoice.speak(text, voice, {
+        rate: 0.8,
         onend: () => {
           resolve(text);
         }
