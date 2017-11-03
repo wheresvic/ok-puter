@@ -33,8 +33,7 @@
 }
 
 .command-list-row .column {
-  margin-bottom: 0.2rem;
-  margin-top: 0.2rem;
+  padding: 0.5rem;
 }
 
 .smash-it {
