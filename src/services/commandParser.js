@@ -15,7 +15,7 @@ export const commands = {
   },
   DONALD_PAUSE_MUSIC: {
     key: 'DONALD_PAUSE_MUSIC',
-    values: ['pause music'],
+    values: ['pause music', 'shut up'],
     action: 'pause'
   },
   DONALD_MUSIC_VOLUME_UP: {

@@ -53,7 +53,7 @@ describe('trainService', () => {
     const text = trainService.getDelayText(trips);
 
     // then
-    console.log(text);
+    expect(text).to.equal('RE-5343 leaving from Haltingen departing at 17:03 going to Basel SBB is delayed by 6 minutes. RB-17031 leaving from Haltingen departing at 17:23 going to Basel Bad Bf is delayed by 0 minutes. ');
   });
 
   

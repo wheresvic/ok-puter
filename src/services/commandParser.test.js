@@ -28,4 +28,12 @@ describe('commandParser', () => {
     expect(command.action).to.equal('set-volume-100');
   });
 
+  it('should return stop music command', () => {
+    // when
+    const command = commandParser('donald shut up');
+
+    // then
+    expect(command.action).to.equal('pause');
+  });
+
 });
