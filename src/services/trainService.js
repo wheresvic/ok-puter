@@ -47,5 +47,9 @@ export const getDelayText = (trips) => {
     }
   }
 
+  if (text === '') {
+    text = 'No delays for Haltingen.';
+  }
+
   return text;
 };
