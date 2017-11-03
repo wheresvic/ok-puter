@@ -31,6 +31,35 @@ const CommandEntry = (props) => {
   );
 }
 
+class Modal extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className={"modal modal-sm " + (this.props.isActive ? 'active' : '')}>
+        <div className="modal-overlay"></div>
+        <div className="modal-container">
+          <div className="modal-header">
+            {/*<button className="btn btn-clear float-right"></button>*/}
+            <div className="modal-title h5">Command params</div>
+          </div>
+          <div className="modal-body">
+            <div className="content">
+              {this.props.children}
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button className="btn" onClick={this.props.onCancelClick}>Cancel</button>
+            <button className="btn btn-primary mx-1" onClick={this.props.onSendClick}>Send</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
 class App extends Component {
 
   constructor(props) {
@@ -41,7 +70,13 @@ class App extends Component {
       commands: [],
       voiceRecognitionStatus: 'voice recognition is off',
       voiceRecognitionStarted: false,
-      commandOutput: ''
+      commandOutput: '',
+      modal: {
+        onCancelClick: null,
+        onSendClick: null,
+        isActive: false,
+        content: null
+      }
     };
   }
 
@@ -144,6 +179,9 @@ class App extends Component {
 
     }).catch(err => {
       console.error(err);
+      this.setState({
+        commandOutput: err + ''
+      });
     });
   }
 
@@ -158,6 +196,9 @@ class App extends Component {
       this.setState({commandOutput: text});
     }).catch(err => {
       console.error(err);
+      this.setState({
+        commandOutput: err + ''
+      });
     });
   }
 
@@ -194,8 +235,15 @@ class App extends Component {
         <button className="btn btn-primary" onClick={this.handleStartRecognize}>Start voice recognition</button>
       );
 
+    const renderedCommandOutput = this.state.commandOutput
+      ? (
+        <code className="fade-in">{this.state.commandOutput}</code>
+      )
+      : null;
+
     return (
       <div>
+        <Modal isActive={this.state.modal.isActive}>{this.state.modal.content}</Modal>
         <div className="bg-secondary">
           <section
             className="container grid-xs"
@@ -277,7 +325,7 @@ class App extends Component {
             className="divider text-center voice-recognition-status"
             data-content="command output"></div>
           <div className="app-content text-center">
-            {this.state.commandOutput}
+            {renderedCommandOutput}
           </div>
         </section>
 
