@@ -31,7 +31,11 @@ export const commands = {
   DONALD_MUSIC_SET_VOLUME: {
     key: 'DONALD_MUSIC_SET_VOLUME',
     values: ['music set volume'],
-    action: 'set-volume'
+    action: 'set-volume',
+    applyParam: (level) => {
+      commands.DONALD_MUSIC_SET_VOLUME.action = 'set-volume-' + level;
+      return commands.DONALD_MUSIC_SET_VOLUME;
+    }
   },
 
   DONALD_NEXT_SONG: {
@@ -62,7 +66,9 @@ export const commandParser = (text) => {
             number = 25;
           }
           
-          commands[command].action = 'set-volume-' + number;
+          commands[command].applyParam(number);
+
+          // commands[command].action = 'set-volume-' + number;
         }
         
         return commands[command];

@@ -31,14 +31,29 @@ const CommandEntry = (props) => {
   );
 }
 
-class Modal extends Component {
+class MusicSetVolumeModal extends Component {
   constructor(props) {
     super(props);
   }
 
+  onCancelClick = (e) => {
+    this
+      .props
+      .doCancel();
+  }
+
+  onSendClick = (e) => {
+    this
+      .props
+      .doSend('30');
+  }
+
   render() {
     return (
-      <div className={"modal modal-sm " + (this.props.isActive ? 'active' : '')}>
+      <div
+        className={"modal modal-sm " + (this.props.isActive
+        ? 'active'
+        : '')}>
         <div className="modal-overlay"></div>
         <div className="modal-container">
           <div className="modal-header">
@@ -47,17 +62,21 @@ class Modal extends Component {
           </div>
           <div className="modal-body">
             <div className="content">
-              {this.props.children}
+              blah blah
             </div>
           </div>
           <div className="modal-footer">
-            <button className="btn" onClick={this.props.onCancelClick}>Cancel</button>
-            <button className="btn btn-primary mx-1" onClick={this.props.onSendClick}>Send</button>
+            <button className="btn" onClick={this.onCancelClick}>Cancel</button>
+            <button className="btn btn-primary mx-1" onClick={this.onSendClick}>Send</button>
           </div>
         </div>
       </div>
     );
   }
+}
+
+const resetModal = () => {
+  return {isActive: false, onCancelClick: null, onSendClick: null, content: null};
 }
 
 class App extends Component {
@@ -71,11 +90,30 @@ class App extends Component {
       voiceRecognitionStatus: 'voice recognition is off',
       voiceRecognitionStarted: false,
       commandOutput: '',
-      modal: {
-        onCancelClick: null,
-        onSendClick: null,
+      commandOutputTime: null,
+      modalMusicSetVolume: {
         isActive: false,
-        content: null
+        doCancel: () => {
+          this.setState({
+            modalMusicSetVolume: {
+              ...this.state.modalMusicSetVolume,
+              isActive: false
+            }
+          });
+        },
+        doSend: (level) => {
+          this.setState({
+            modalMusicSetVolume: {
+              ...this.state.modalMusicSetVolume,
+              isActive: false
+            }
+          });
+
+          const command = commands
+            .DONALD_MUSIC_SET_VOLUME
+            .applyParam(level);
+          this.doDonaldMusicAction(command);
+        }
       }
     };
   }
@@ -175,12 +213,13 @@ class App extends Component {
     donaldMusicAction(command).then(response => {
       console.log(response);
 
-      this.setState({commandOutput: `${response.url} - ${response.status}`});
+      this.setState({commandOutput: `${response.url} - ${response.status}`, commandOutputTime: moment()});
 
     }).catch(err => {
       console.error(err);
       this.setState({
-        commandOutput: err + ''
+        commandOutput: err + '',
+        commandOutputTime: moment()
       });
     });
   }
@@ -193,12 +232,22 @@ class App extends Component {
       return speak(tweets[rand].text);
 
     }).then(text => {
-      this.setState({commandOutput: text});
+      this.setState({commandOutput: text, commandOutputTime: moment()});
     }).catch(err => {
       console.error(err);
       this.setState({
-        commandOutput: err + ''
+        commandOutput: err + '',
+        commandOutputTime: moment()
       });
+    });
+  }
+
+  doDonaldMusicSetVolume = () => {
+    this.setState({
+      modalMusicSetVolume: {
+        ...this.state.modalMusicSetVolume,
+        isActive: true
+      }
     });
   }
 
@@ -243,7 +292,10 @@ class App extends Component {
 
     return (
       <div>
-        <Modal isActive={this.state.modal.isActive}>{this.state.modal.content}</Modal>
+        <MusicSetVolumeModal
+          isActive={this.state.modalMusicSetVolume.isActive}
+          doCancel={this.state.modalMusicSetVolume.doCancel}
+          doSend={this.state.modalMusicSetVolume.doSend}/>
         <div className="bg-secondary">
           <section
             className="container grid-xs"
@@ -303,7 +355,7 @@ class App extends Component {
                   .bind(this, commands.DONALD_MUSIC_VOLUME_DOWN)}>music volume down</button>
               </div>
               <div className="column col-3 col-md-4 col-sm-12 text-center">
-                <button className="btn">music set volume &lt;[0-100]&gt;</button>
+                <button className="btn" onClick={this.doDonaldMusicSetVolume}>music set volume &lt;[0-100]&gt;</button>
               </div>
               <div className="column col-3 col-md-4 col-sm-12 text-center">
                 <button
