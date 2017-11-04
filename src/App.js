@@ -167,11 +167,13 @@ class App extends Component {
       recognition.start();
     }
 
+    /*
     recognition.onerror = (event) => {
       this.setState({voiceRecognitionStatus: 'error while doing voice recognition'});
 
       console.error(event);
     }
+    */
 
     recognition.onresult = (event) => {
 

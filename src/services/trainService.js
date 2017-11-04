@@ -49,6 +49,8 @@ export const getDelayText = (trips) => {
 
   if (text === '') {
     text = 'No delays for Haltingen.';
+  } else {
+    text = 'Oh no ' + text;
   }
 
   return text;
