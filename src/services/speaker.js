@@ -20,13 +20,12 @@ export const speak = (text) => {
 
       console.log(text);
 
-      /*
       const speech = new SpeechSynthesisUtterance();
 
       // Set the text and voice attributes.
       speech.text = text;
       speech.volume = 1;
-      speech.rate = 1;
+      speech.rate = 0.9;
       speech.pitch = 1;
 
       speech.onend = () => {
@@ -36,14 +35,16 @@ export const speak = (text) => {
       window
         .speechSynthesis
         .speak(speech);
-      */
-
+      
+      /*
       responsiveVoice.speak(text, voice, {
-        rate: 0.8,
+        rate: 1,
         onend: () => {
           resolve(text);
         }
       });
+      */
+
     } catch (err) {
       reject(err);
     }
