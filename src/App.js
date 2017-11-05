@@ -410,6 +410,20 @@ class App extends Component {
                 <button
                   className="btn"
                   onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_DELETE_SONG)}>delete song</button>
+              </div>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
+                  .doDonaldMusicAction
+                  .bind(this, commands.DONALD_SEEK_SONG)}>seek song</button>
+              </div>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button
+                  className="btn"
+                  onClick={this
                   .doGetTrainDelays
                   .bind(this, commands.DONALD_TRAIN_DELAYS)}>Get train delays for haltingen</button>
               </div>

@@ -47,6 +47,16 @@ export const commands = {
     values: ['previous song'],
     action: 'previous'
   },
+  DONALD_DELETE_SONG: {
+    key: 'DONALD_DELETE_SONG',
+    values: ['delete song'],
+    action: 'delete-current'
+  },
+  DONALD_SEEK_SONG: {
+    key: 'DONALD_SEEK_SONG',
+    values: ['seek song', 'forward song'],
+    action: 'seek-by-30'
+  },
   DONALD_TRAIN_DELAYS: {
     key: 'DONALD_TRAIN_DELAYS',
     values: ['train delay'],
