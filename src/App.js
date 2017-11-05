@@ -11,6 +11,7 @@ import {speak} from './services/speaker';
 import {getTrumpTweets} from './services/tweetService';
 import {donaldMusicAction} from './services/musicService';
 import * as trainService from './services/trainService';
+import * as quoteService from './services/quoteService';
 
 import img from './voice-recognition.jpg';
 
@@ -279,6 +280,13 @@ class App extends Component {
       });
   }
 
+  doGetRandomQuote = async() => {
+    const quote = await quoteService.getRandomQuote();
+    for (const dialog of quote) {
+      await speak(dialog.text);
+    }
+  }
+
   render() {
 
     const renderedCommands = [];
@@ -426,6 +434,9 @@ class App extends Component {
                   onClick={this
                   .doGetTrainDelays
                   .bind(this, commands.DONALD_TRAIN_DELAYS)}>Get train delays for haltingen</button>
+              </div>
+              <div className="column col-3 col-md-4 col-sm-12 text-center">
+                <button className="btn" onClick={this.doGetRandomQuote}>Get random quote</button>
               </div>
 
             </div>
