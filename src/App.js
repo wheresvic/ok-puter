@@ -8,7 +8,6 @@ import './App.css';
 
 import {commands, commandParser} from './services/commandParser';
 import {speak} from './services/speaker';
-import {getTrumpTweets} from './services/tweetService';
 import {donaldMusicAction} from './services/musicService';
 import * as trainService from './services/trainService';
 import * as quoteService from './services/quoteService';
@@ -155,9 +154,7 @@ class App extends Component {
         const recognizedCommand = commandParser(command);
 
         if (recognizedCommand) {
-          if (recognizedCommand.key === commands.TRUMP_TWEETS.key) {
-            this.doGetTrumpTweets();
-          } else if (recognizedCommand.key === commands.DONALD_TRAIN_DELAYS.key) {
+          if (recognizedCommand.key === commands.DONALD_TRAIN_DELAYS.key) {
             this.doGetTrainDelays(recognizedCommand);
           } else {
             this.doDonaldMusicAction(recognizedCommand);
@@ -210,35 +207,12 @@ class App extends Component {
 
   }
 
-  getTrumpTweetsClick = (e) => {
-    e.preventDefault();
-    this.doGetTrumpTweets();
-  }
-
   doDonaldMusicAction = (command) => {
     donaldMusicAction(command).then(response => {
       console.log(response);
 
       this.setState({commandOutput: `${response.url} - ${response.status}`, commandOutputTime: moment()});
 
-    }).catch(err => {
-      console.error(err);
-      this.setState({
-        commandOutput: err + '',
-        commandOutputTime: moment()
-      });
-    });
-  }
-
-  doGetTrumpTweets = () => {
-    getTrumpTweets().then(tweets => {
-      console.log(tweets);
-
-      const rand = chance.natural({min: 0, max: tweets.length});
-      return speak(tweets[rand].text);
-
-    }).then(text => {
-      this.setState({commandOutput: text, commandOutputTime: moment()});
     }).catch(err => {
       console.error(err);
       this.setState({
@@ -359,9 +333,6 @@ class App extends Component {
           <div className="divider text-center" data-content="available commands"></div>
           <div className="available-commands">
             <div className="columns command-list-row">
-              <div className="column col-3 col-md-4 col-sm-12 text-center">
-                <button className="btn" onClick={this.doGetTrumpTweets}>trump tweets</button>
-              </div>
               <div className="column col-3 col-md-4 col-sm-12 text-center">
                 <button
                   className="btn"

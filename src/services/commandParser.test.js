@@ -4,14 +4,6 @@ import {commands, commandParser} from './commandParser';
 
 describe('commandParser', () => {
 
-  it('should get trump tweets', () => {
-    // when
-    const command = commandParser('trump tweets');
-
-    // then
-    expect(command.TRUMP_TWEETS).to.be.not.null;
-  });
-
   it('should return null for unknown command', () => {
     // when
     const command = commandParser('rump tweets');

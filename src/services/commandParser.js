@@ -1,8 +1,4 @@
 export const commands = {
-  TRUMP_TWEETS: {
-    key: 'TRUMP_TWEETS',
-    values: ['trump tweets']
-  },
   DONALD_PLAY_MUSIC: {
     key: 'DONALD_PLAY_MUSIC',
     values: ['play music'],
