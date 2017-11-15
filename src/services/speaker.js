@@ -19,6 +19,7 @@ export const speak = (text) => {
 
   return new Promise((resolve, reject) => {
     try {
+      window.speechSynthesis.cancel();
 
       if (!text) {
         console.log('no text provided');
@@ -33,9 +34,10 @@ export const speak = (text) => {
       speech.rate = 1;
       speech.pitch = 1;
       speech.voice = voices[3];
+      
 
       speechUtteranceChunker(speech, {
-        chunkLength: 200
+        chunkLength: 160
       }, () => {
         resolve(text);
       });
