@@ -20,6 +20,8 @@
     "start": "BROWSER=google-chrome react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "copy-build": "cp -r build ~/npq/ok-puter-server/",
+    "deploy": "npm run build && npm run copy-build"
   }
 }
